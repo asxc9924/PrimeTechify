@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UTK — Business Growth Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --white: #F5F2ED;
+    --gold: #C9A84C;
+    --gold-light: #E8D5A3;
+    --gold-dim: #8B6F2E;
+    --surface: #111010;
+    --surface2: #1A1918;
+    --muted: #6B6560;
+    --text: #D4CFC8;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(201,168,76,0.4);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.18s ease, width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+    transform: translate(-50%, -50%);
+  }
+  body:hover .cursor-ring { opacity: 1; }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9997;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 28px 60px;
+    border-bottom: 1px solid rgba(201,168,76,0.08);
+    background: rgba(8,8,8,0.85);
+    backdrop-filter: blur(20px);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: 0.15em;
+    color: var(--white);
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links {
+    display: flex; gap: 44px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--gold);
+    padding: 12px 28px;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  .nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    padding: 140px 60px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(201,168,76,0.04) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 40% at 20% 80%, rgba(201,168,76,0.03) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-line {
+    position: absolute;
+    right: 60px; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, rgba(201,168,76,0.15) 30%, rgba(201,168,76,0.15) 70%, transparent);
+  }
+  .hero-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 36px;
+    display: flex; align-items: center; gap: 16px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 40px; height: 1px;
+    background: var(--gold);
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(64px, 8vw, 120px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    max-width: 900px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.4s forwards;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero-title .outline-text {
+    -webkit-text-stroke: 1px rgba(245,242,237,0.3);
+    color: transparent;
+  }
+  .hero-sub {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--muted);
+    max-width: 420px;
+    line-height: 1.8;
+    margin-bottom: 60px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.6s forwards;
+  }
+  .hero-actions {
+    display: flex; align-items: center; gap: 36px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.8s forwards;
+  }
+  .btn-primary {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--gold);
+    padding: 18px 44px;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 12px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold-light);
+    transform: translateX(-100%);
+    transition: transform 0.4s ease;
+  }
+  .btn-primary:hover::after { transform: translateX(0); }
+  .btn-primary span { position: relative; z-index: 1; }
+  .btn-ghost {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex; align-items: center; gap: 10px;
+    transition: color 0.3s ease;
+  }
+  .btn-ghost:hover { color: var(--white); }
+  .btn-ghost .arrow {
+    width: 32px; height: 1px;
+    background: currentColor;
+    position: relative;
+    transition: width 0.3s ease;
+  }
+  .btn-ghost:hover .arrow { width: 48px; }
+  .btn-ghost .arrow::after {
+    content: '';
+    position: absolute;
+    right: 0; top: -3px;
+    width: 6px; height: 6px;
+    border-right: 1px solid currentColor;
+    border-top: 1px solid currentColor;
+    transform: rotate(45deg);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 48px; left: 60px;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex; align-items: center; gap: 12px;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.2s forwards;
+  }
+  .hero-scroll::before {
+    content: '';
+    display: block;
+    width: 1px; height: 48px;
+    background: linear-gradient(to bottom, transparent, var(--muted));
+    animation: scrollLine 2s ease infinite;
+  }
+  .hero-number {
+    position: absolute;
+    right: 80px; bottom: 48px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 120px;
+    font-weight: 300;
+    color: rgba(201,168,76,0.04);
+    line-height: 1;
+    pointer-events: none;
+    opacity: 0;
+    animation: fadeIn 1s ease 1s forwards;
+  }
+
+  /* MARQUEE */
+  .marquee-section {
+    border-top: 1px solid rgba(201,168,76,0.1);
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+    padding: 20px 0;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .marquee-track {
+    display: flex; gap: 0;
+    animation: marquee 20s linear infinite;
+    width: max-content;
+  }
+  .marquee-item {
+    display: flex; align-items: center; gap: 32px;
+    padding: 0 40px;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .marquee-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  /* SECTIONS */
+  section { padding: 120px 60px; }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .section-label::before {
+    content: '';
+    width: 28px; height: 1px;
+    background: var(--gold);
+  }
+
+  /* SERVICES */
+  .services { background: var(--black); }
+  .services-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 80px;
+  }
+  .services-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(42px, 5vw, 72px);
+    line-height: 1.05;
+    color: var(--white);
+  }
+  .services-title em { font-style: italic; color: var(--gold); }
+  .services-desc {
+    max-width: 320px;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.8;
+    text-align: right;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border: 1px solid rgba(201,168,76,0.1);
+  }
+  .service-card {
+    padding: 48px 36px;
+    border-right: 1px solid rgba(201,168,76,0.1);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s ease;
+    cursor: none;
+  }
+  .service-card:last-child { border-right: none; }
+  .service-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .service-card:hover { background: var(--surface); }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    color: var(--gold-dim);
+    margin-bottom: 32px;
+    font-weight: 400;
+  }
+  .service-icon {
+    width: 40px; height: 40px;
+    margin-bottom: 28px;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+  }
+  .service-card:hover .service-icon { opacity: 1; }
+  .service-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 16px;
+    letter-spacing: 0.02em;
+  }
+  .service-text {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 28px;
+  }
+  .service-tags {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .tag {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 4px 10px;
+  }
+
+  /* STATS */
+  .stats-section {
+    background: var(--surface);
+    border-top: 1px solid rgba(201,168,76,0.08);
+    border-bottom: 1px solid rgba(201,168,76,0.08);
+    padding: 80px 60px;
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 1px solid rgba(201,168,76,0.1);
+  }
+  .stat-item {
+    padding: 48px 40px;
+    border-right: 1px solid rgba(201,168,76,0.1);
+    position: relative;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 72px;
+    line-height: 1;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .stat-number span { color: var(--gold); font-size: 40px; vertical-align: super; }
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  /* PROCESS */
+  .process { background: var(--black); }
+  .process-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(42px, 5vw, 72px);
+    color: var(--white);
+    max-width: 600px;
+    margin-bottom: 80px;
+    line-height: 1.05;
+  }
+  .process-title em { font-style: italic; color: var(--gold); }
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  .process-steps::before {
+    content: '';
+    position: absolute;
+    top: 32px; left: 0; right: 0;
+    height: 1px;
+    background: rgba(201,168,76,0.15);
+  }
+  .process-step {
+    padding: 0 36px 0 0;
+    position: relative;
+  }
+  .step-dot {
+    width: 64px; height: 64px;
+    border: 1px solid rgba(201,168,76,0.3);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 32px;
+    position: relative;
+    background: var(--black);
+    z-index: 1;
+    transition: border-color 0.3s ease, background 0.3s ease;
+  }
+  .process-step:hover .step-dot {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.05);
+  }
+  .step-dot-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--gold);
+  }
+  .step-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 14px;
+    letter-spacing: 0.02em;
+  }
+  .step-text {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  /* WHY UTK */
+  .why {
+    background: var(--surface);
+    border-top: 1px solid rgba(201,168,76,0.08);
+  }
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: center;
+  }
+  .why-left .why-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(42px, 5vw, 68px);
+    color: var(--white);
+    line-height: 1.05;
+    margin-bottom: 36px;
+  }
+  .why-title em { font-style: italic; color: var(--gold); }
+  .why-body {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.9;
+    margin-bottom: 48px;
+  }
+  .why-points { display: flex; flex-direction: column; gap: 0; }
+  .why-point {
+    display: flex; align-items: flex-start; gap: 24px;
+    padding: 24px 0;
+    border-bottom: 1px solid rgba(201,168,76,0.08);
+    transition: padding-left 0.3s ease;
+  }
+  .why-point:hover { padding-left: 8px; }
+  .why-point-icon {
+    width: 20px; height: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: var(--gold);
+  }
+  .why-point-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+  .why-point-text {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* TESTIMONIALS */
+  .testimonials { background: var(--black); }
+  .testimonials-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(42px, 5vw, 68px);
+    color: var(--white);
+    margin-bottom: 64px;
+    line-height: 1.05;
+  }
+  .testimonials-title em { font-style: italic; color: var(--gold); }
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: rgba(201,168,76,0.08);
+  }
+  .testimonial-card {
+    background: var(--black);
+    padding: 48px 40px;
+    transition: background 0.3s ease;
+  }
+  .testimonial-card:hover { background: var(--surface); }
+  .testimonial-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text);
+    line-height: 1.9;
+    margin-bottom: 36px;
+  }
+  .testimonial-quote::before {
+    content: '"';
+    font-size: 60px;
+    color: var(--gold);
+    line-height: 0.6;
+    display: block;
+    margin-bottom: 20px;
+    font-style: normal;
+  }
+  .testimonial-author {
+    display: flex; align-items: center; gap: 16px;
+  }
+  .author-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1px solid rgba(201,168,76,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .author-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 3px;
+  }
+  .author-role {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* CTA */
+  .cta-section {
+    background: var(--surface);
+    border-top: 1px solid rgba(201,168,76,0.1);
+    padding: 120px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: 'UTK';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Syne', sans-serif;
+    font-size: 300px;
+    font-weight: 800;
+    color: rgba(201,168,76,0.025);
+    letter-spacing: 0.1em;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .cta-label {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    display: flex; align-items: center; justify-content: center; gap: 14px;
+    position: relative;
+  }
+  .cta-label::before, .cta-label::after {
+    content: ''; width: 28px; height: 1px; background: var(--gold);
+  }
+  .cta-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(48px, 6vw, 88px);
+    color: var(--white);
+    margin-bottom: 24px;
+    line-height: 1.0;
+    position: relative;
+  }
+  .cta-title em { font-style: italic; color: var(--gold); }
+  .cta-sub {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--muted);
+    max-width: 480px;
+    margin: 0 auto 56px;
+    line-height: 1.8;
+    position: relative;
+  }
+  .cta-form {
+    display: flex; gap: 0;
+    max-width: 520px;
+    margin: 0 auto 24px;
+    position: relative;
+  }
+  .cta-input {
+    flex: 1;
+    background: rgba(245,242,237,0.04);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-right: none;
+    padding: 18px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--white);
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+  .cta-input::placeholder { color: var(--muted); }
+  .cta-input:focus { border-color: rgba(201,168,76,0.5); }
+  .cta-submit {
+    background: var(--gold);
+    border: none;
+    padding: 18px 36px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--black);
+    cursor: none;
+    transition: background 0.3s ease;
+  }
+  .cta-submit:hover { background: var(--gold-light); }
+  .cta-note {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    position: relative;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--black);
+    border-top: 1px solid rgba(201,168,76,0.1);
+    padding: 64px 60px 40px;
+  }
+  .footer-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 64px;
+  }
+  .footer-brand {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    letter-spacing: 0.15em;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+  .footer-brand span { color: var(--gold); }
+  .footer-tagline {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+    max-width: 260px;
+    line-height: 1.7;
+  }
+  .footer-cols {
+    display: flex; gap: 80px;
+  }
+  .footer-col-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .footer-links a {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 32px;
+    border-top: 1px solid rgba(201,168,76,0.06);
+  }
+  .footer-copy {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 300;
+    letter-spacing: 0.05em;
+  }
+  .footer-copy span { color: var(--gold); }
+  .footer-socials { display: flex; gap: 20px; }
+  .footer-social {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(201,168,76,0.15);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 12px;
+    transition: all 0.3s ease;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+  }
+  .footer-social:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes scrollLine {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">U<span>T</span>K</div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#why">Why UTK</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Start a project</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-line"></div>
+
+  <div class="hero-eyebrow">Full-service business growth agency</div>
+
+  <h1 class="hero-title">
+    We build<br>
+    <em>businesses</em><br>
+    <span class="outline-text">that scale.</span>
+  </h1>
+
+  <p class="hero-sub">UTK is the single partner that handles everything your business needs to grow — technology, marketing, design, and strategy — with zero compromise.</p>
+
+  <div class="hero-actions">
+    <a href="#contact" class="btn-primary">
+      <span>Start growing</span>
+      <span>→</span>
+    </a>
+    <a href="#services" class="btn-ghost">
+      <span class="arrow"></span>
+      Explore services
+    </a>
+  </div>
+
+  <div class="hero-scroll">Scroll to explore</div>
+  <div class="hero-number">01</div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item"><span class="marquee-dot"></span>Tech Development</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>AI Automation</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Brand Strategy</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Digital Marketing</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>UI/UX Design</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Business Consulting</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Content Creation</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Growth Strategy</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Tech Development</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>AI Automation</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Brand Strategy</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Digital Marketing</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>UI/UX Design</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Business Consulting</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Content Creation</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Growth Strategy</div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-header reveal">
+    <div>
+      <div class="section-label">What we do</div>
+      <h2 class="services-title">Every service<br>your business <em>needs</em></h2>
+    </div>
+    <p class="services-desc">Stop managing 5 different vendors. UTK handles everything under one roof, with one unified strategy.</p>
+  </div>
+
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <svg class="service-icon" viewBox="0 0 40 40" fill="none" stroke="#C9A84C" stroke-width="1">
+        <rect x="4" y="8" width="32" height="24" rx="2"/><path d="M14 28l4-8 4 4 4-10"/>
+      </svg>
+      <div class="service-name">Tech & Development</div>
+      <p class="service-text">Websites, mobile apps, AI systems, and custom automation built to perform at the highest level.</p>
+      <div class="service-tags">
+        <span class="tag">Web apps</span>
+        <span class="tag">AI tools</span>
+        <span class="tag">Automation</span>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-num">02</div>
+      <svg class="service-icon" viewBox="0 0 40 40" fill="none" stroke="#C9A84C" stroke-width="1">
+        <circle cx="20" cy="20" r="14"/><path d="M20 6v28M6 20h28M9 10l22 20M31 10L9 30"/>
+      </svg>
+      <div class="service-name">Marketing & Growth</div>
+      <p class="service-text">Paid ads, SEO, social media, and email campaigns engineered to bring real customers, not just impressions.</p>
+      <div class="service-tags">
+        <span class="tag">Paid ads</span>
+        <span class="tag">SEO</span>
+        <span class="tag">Email</span>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-num">03</div>
+      <svg class="service-icon" viewBox="0 0 40 40" fill="none" stroke="#C9A84C" stroke-width="1">
+        <rect x="6" y="6" width="12" height="12" rx="1"/><rect x="22" y="6" width="12" height="12" rx="1"/>
+        <rect x="6" y="22" width="12" height="12" rx="1"/><circle cx="28" cy="28" r="6"/>
+      </svg>
+      <div class="service-name">Design & Creative</div>
+      <p class="service-text">Brand identity, UI/UX, video production, and creative direction that makes businesses impossible to ignore.</p>
+      <div class="service-tags">
+        <span class="tag">Branding</span>
+        <span class="tag">UI/UX</span>
+        <span class="tag">Video</span>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-num">04</div>
+      <svg class="service-icon" viewBox="0 0 40 40" fill="none" stroke="#C9A84C" stroke-width="1">
+        <path d="M20 4l16 8v16l-16 8L4 28V12z"/><path d="M20 4v28M4 12l16 8 16-8"/>
+      </svg>
+      <div class="service-name">Strategy & Consulting</div>
+      <p class="service-text">Growth roadmaps, business strategy, investor prep, and operational frameworks built from real-world experience.</p>
+      <div class="service-tags">
+        <span class="tag">Growth plans</span>
+        <span class="tag">Fundraising</span>
+        <span class="tag">Ops</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-section">
+  <div class="stats-grid reveal">
+    <div class="stat-item">
+      <div class="stat-number">200<span>+</span></div>
+      <div class="stat-label">Businesses served</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">98<span>%</span></div>
+      <div class="stat-label">Client retention rate</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">40<span>+</span></div>
+      <div class="stat-label">Industries covered</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">12<span>x</span></div>
+      <div class="stat-label">Average ROI delivered</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="section-label reveal">How we work</div>
+  <h2 class="process-title reveal">A process built for <em>results,</em><br>not just delivery</h2>
+
+  <div class="process-steps reveal">
+    <div class="process-step">
+      <div class="step-dot"><span class="step-dot-num">01</span></div>
+      <div class="step-title">Deep discovery</div>
+      <p class="step-text">We spend the first week understanding your business, market, competition, and goals at a level most agencies never bother with.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-dot"><span class="step-dot-num">02</span></div>
+      <div class="step-title">Strategy first</div>
+      <p class="step-text">Before a single pixel is designed or line of code is written, we build a unified strategy that connects every service to your specific growth target.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-dot"><span class="step-dot-num">03</span></div>
+      <div class="step-title">Execution at pace</div>
+      <p class="step-text">Our hybrid team of in-house experts and vetted specialists delivers with military precision — on time, on brief, no excuses.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-dot"><span class="step-dot-num">04</span></div>
+      <div class="step-title">Measure & scale</div>
+      <p class="step-text">We track everything. What works gets doubled. What doesn't gets cut immediately. Your growth compounds every single month.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY UTK -->
+<section class="why" id="why">
+  <div class="why-grid">
+    <div class="why-left reveal">
+      <div class="section-label">Why UTK</div>
+      <h2 class="why-title">Not just an agency.<br>Your <em>growth</em><br>partner.</h2>
+      <p class="why-body">Most agencies sell you deliverables. UTK sells you outcomes. We don't stop when the project is done — we stay until your numbers move.</p>
+      <a href="#contact" class="btn-primary"><span>Work with us</span><span>→</span></a>
+    </div>
+    <div class="why-right reveal">
+      <div class="why-points">
+        <div class="why-point">
+          <svg class="why-point-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2l2.4 4.8 5.6.8-4 3.9.9 5.5L10 14.4l-4.9 2.6.9-5.5-4-3.9 5.6-.8z"/></svg>
+          <div>
+            <div class="why-point-title">Results guaranteed or we work for free</div>
+            <p class="why-point-text">We put our money where our mouth is. If we don't hit agreed targets in 90 days, you don't pay for that month. Period.</p>
+          </div>
+        </div>
+        <div class="why-point">
+          <svg class="why-point-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="8"/><path d="M10 6v4l3 3"/></svg>
+          <div>
+            <div class="why-point-title">One team, zero handoffs</div>
+            <p class="why-point-text">Your account lead knows your business as well as you do. No repeated briefings, no broken telephone. One brain, total ownership.</p>
+          </div>
+        </div>
+        <div class="why-point">
+          <svg class="why-point-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 10h14M10 3l7 7-7 7"/></svg>
+          <div>
+            <div class="why-point-title">Built for global reach from Jaipur</div>
+            <p class="why-point-text">World-class quality at competitive prices. We serve clients from India to the UAE, UK, and USA — delivering international-grade work at every level.</p>
+          </div>
+        </div>
+        <div class="why-point">
+          <svg class="why-point-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="16" height="12" rx="2"/><path d="M2 8h16"/></svg>
+          <div>
+            <div class="why-point-title">Transparent pricing, zero surprises</div>
+            <p class="why-point-text">Fixed retainers, clear scope, honest conversations. You always know exactly what you're getting and what it costs before we start.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="section-label reveal">Client stories</div>
+  <h2 class="testimonials-title reveal">What businesses<br>say about <em>UTK</em></h2>
+  <div class="testimonials-grid reveal">
+    <div class="testimonial-card">
+      <p class="testimonial-quote">UTK didn't just build our website — they rebuilt our entire customer acquisition system. Revenue grew 3x in four months. I wish we had found them two years earlier.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">RK</div>
+        <div>
+          <div class="author-name">Rohit Khanna</div>
+          <div class="author-role">Founder, D2C Skincare Brand</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <p class="testimonial-quote">We'd worked with four agencies before UTK. None of them could handle tech AND marketing together. UTK did both, seamlessly, and we finally stopped wasting money on disconnected vendors.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">SJ</div>
+        <div>
+          <div class="author-name">Sneha Joshi</div>
+          <div class="author-role">CEO, B2B SaaS Startup</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <p class="testimonial-quote">The team at UTK is unlike any agency I've met. They think like co-founders, not contractors. They care about the result more than the invoice. That is extraordinarily rare.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">AM</div>
+        <div>
+          <div class="author-name">Arjun Mehta</div>
+          <div class="author-role">MD, Real Estate Group</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-label reveal">Get started</div>
+  <h2 class="cta-title reveal">Ready to grow<br><em>your business?</em></h2>
+  <p class="cta-sub reveal">Tell us what you're building. We'll tell you exactly how we'll make it unstoppable.</p>
+  <div class="cta-form reveal">
+    <input class="cta-input" type="email" placeholder="Your business email">
+    <button class="cta-submit">Let's talk →</button>
+  </div>
+  <p class="cta-note reveal">No commitment. Free 30-minute strategy call included.</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand">U<span>T</span>K</div>
+      <p class="footer-tagline">The full-service growth partner for businesses that refuse to stay small.</p>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <div class="footer-col-title">Services</div>
+        <ul class="footer-links">
+          <li><a href="#">Tech & Development</a></li>
+          <li><a href="#">Marketing & Growth</a></li>
+          <li><a href="#">Design & Creative</a></li>
+          <li><a href="#">Strategy & Consulting</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#">About UTK</a></li>
+          <li><a href="#">Our work</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Connect</div>
+        <ul class="footer-links">
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Twitter / X</a></li>
+          <li><a href="#">hello@utk.agency</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2026 <span>UTK Agency</span>. All rights reserved. Based in Jaipur, India.</p>
+    <div class="footer-socials">
+      <a href="#" class="footer-social">Li</a>
+      <a href="#" class="footer-social">Ig</a>
+      <a href="#" class="footer-social">X</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+
+  function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button, .service-card, .why-point').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      ring.style.width = '60px';
+      ring.style.height = '60px';
+      ring.style.borderColor = 'rgba(201,168,76,0.7)';
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.style.width = '36px';
+      ring.style.height = '36px';
+      ring.style.borderColor = 'rgba(201,168,76,0.4)';
+    });
+  });
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
